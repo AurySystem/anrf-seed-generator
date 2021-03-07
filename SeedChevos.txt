@@ -1,0 +1,46 @@
+file = `$Megamap Chevos
+0 Revenant Station
+1 Glitch Module
+2 The Traitor
+3 Ally Bot
+4 Glitch Scrap
+!
+$Normal /Exterminator achievement count: 14
+0 RevenantStation
+1 OrbBot
+2 GunBot
+3 ThoroughBot
+4 FastBot
+5 FightBot
+6 GlitchModule
+7 TheQuickening
+8 TheTraitor
+9 AllyBot
+10 ForestSlums
+11 CoolantSewers
+12 GlitchScrap
+13 CrystalMines
+!
+$BossRush achievement count: 21
+0 AutoTurret
+1 BigBolt
+2 PowerJump
+3 HomingBolt
+4 HunterKiller
+5 HoverBoots
+6 LaserBeam
+7 LightningGun
+8 RoyalOrb
+9 TriOrb
+10 TripleShot
+11 ViridianShell
+12 ForestSlums
+13 NecroluminantSpray
+14 HiveHelm
+15 CoolantSewers
+16 UpDog
+17 Lasorb
+18 CrystalMines
+19 HazardShell
+20 PhaseShell
+!`
