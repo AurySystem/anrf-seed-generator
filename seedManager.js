@@ -176,17 +176,18 @@ function readItems(mode) {
     return items
 }
 
-function readAcheivements(mode) {//this won't work obvs until we set up acheivements
+function readAcheivements(mode) {
     var length = 14;
     var chevos = []
     if (mode == "N") { length = 14; }
     if (mode == "B") { length = 21;}
     if (mode == "M") { length = 5; }
     var e = document.getElementById("achivements" + mode);
-    var temp = e.options;
+    var temp = e.children;
     for (var i = 0; i < temp.length; i++) {
-        if (temp[i].selected) {
-            chevos[i] = temp[i].value;
+        if (temp[i].children[0].checked) {
+            let id = temp[i].children[0].id;
+            chevos[i] = parseInt(id.replace("chevo"+mode,""));
         }
     }
     return chevos
@@ -219,15 +220,39 @@ function populateAcheivements(mode) {
     if (mode == "B") { length = 21; achievementList = Acheviements.BossRush; }
     if (mode == "M") { length = 5; achievementList = Acheviements.MegaMap; }
     var e = document.getElementById("Chevos" + mode);
-    var box = document.createElement("select");
-    box.id = "achivements" + mode;
-    box.multiple = true;
+    var box = document.createElement("span");
+    var anchor = document.createElement("span");
+    var text1 = document.createTextNode("achivements");
+    var list = document.createElement("ul");
+    anchor.append(text1);
+
+    anchor.onclick = function (e) {
+        let list = document.getElementById("achivements" + mode);
+        if (list.classList.contains('visible')) {
+            list.classList.remove('visible');
+            list.style.display = "none";
+        }
+
+        else {
+            list.classList.add('visible');
+            list.style.display = "block";
+        }
+    }
+
+    box.appendChild(anchor);
+    box.appendChild(list);
+    list.id = "achivements" + mode;
     e.appendChild(box);
     for (var b = 0; b < achievementList.length; b++) {
-        var opt = document.createElement("option");
-        opt.text = achievementList[b];
-        opt.value = b;
-        box.add(opt);
+        var opt = document.createElement("li");
+        var check = document.createElement("input");
+        var text = document.createTextNode(achievementList[b]);
+
+        check.type = "checkbox"
+        check.id = 'chevo'+mode+b
+        opt.appendChild(check);
+        opt.append(text);
+        list.appendChild(opt);
     }
 }
 
