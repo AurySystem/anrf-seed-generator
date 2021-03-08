@@ -10,7 +10,7 @@ function convertToBaseK(val, baseDef) {
         var valt = val;
 
         do {
-            var temp = (valt % targetBase)
+            var temp = (valt % targetBase);
             result = baseDef[temp.valueOf()] + result;
             valt = valt / targetBase;
         }
@@ -113,13 +113,12 @@ function traversalItemListToKey(items, mode)
     if (mode == "N") { length = 10; }
     if (mode == "M") { length = 16; }
     //honestly this lil bit's just a one to one port mostly 
-    var indices = 0;
+    var indices = 0n;
     for (i in items) {
-        var mod = 100 ** i;
-        var index = items[i];
+        var mod = 100n ** BigInt.asUintN(64,i);
+        var index = BigInt.asUintN(64,items[i]);
         indices += index * mod;
     }
-
     var key = convertToBaseK(indices, baseKey);
 
     return key.padStart(length, baseKey[0]);
@@ -170,7 +169,7 @@ function readItems(mode) {
     var items = []
     if (mode == "N") { length = 7; }
     if (mode == "B") { length = 0; return ""}
-    if (mode == "M") { length = 10;}
+    if (mode == "M") { length = 12;}
     for (var i = 0; i < length; i++) {//read in order per mode
         var e = document.getElementById("traversalItem" + mode + (i + 1));
         items[i] = e.options[e.selectedIndex].value;
@@ -199,7 +198,7 @@ function populateItems(mode) {
     var length = 7;
     if (mode == "B") { length = 0; return }
     if (mode == "N") { length = 7; }
-    if (mode == "M") { length = 10; }
+    if (mode == "M") { length = 12; }
     var e = document.getElementById("Items");
     var interum = document.createElement("span");
         interum.id = "Items" + mode;
@@ -266,9 +265,6 @@ function clear(mode) {
     let achievementHolder = document.getElementById("Chevos" + mode);
     let itemListHolder = document.getElementById("Items" + mode);
 
-    console.log(achievementHolder);
-    console.log(itemListHolder);
-    console.log(mode);
     if (achievementHolder != null) {
         achievementHolder.remove();
     }
@@ -281,8 +277,6 @@ populateItems("N");
 populateAcheivements("N");
 
 function readgamemode() {
-    console.log(gamemode);
-    console.log(curMode(gamemode));
     clear(curMode(gamemode));
     var e = document.getElementById('mode');
     switch (e.options[e.selectedIndex].value) {
@@ -343,7 +337,6 @@ function buildSeed() {
     //Boss Rush: 1 + 6 + 0 + 8 characters = 15 characters
     //Other Modes : 1 + 6 + 10 + 6 characters = 23 characters
     if (traversalKey == null || traversalKey == undefined) {
-        console.log(traversalKey);
         traversalKey = "";
     }
     console.log(gameModeKey + " " + seedKey + " " + traversalKey + " " + achievementKey); //debug display
