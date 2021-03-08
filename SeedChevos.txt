@@ -1,9 +1,9 @@
-file = `$Megamap Chevos
+file = `$MegaMap Chevos
 0 Revenant Station
-1 Glitch Module
-2 The Traitor
-3 Ally Bot
-4 Glitch Scrap
+1 GlitchModule
+2 TheTraitor
+3 AllyBot
+4 GlitchScrap
 !
 $Normal /Exterminator achievement count: 14
 0 RevenantStation

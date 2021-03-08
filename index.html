@@ -9,8 +9,15 @@
     <h1>ARNF Seed Tool</h1>
 
     <div id="content">
-        <span id="ItemsN"> Progression Items</span> <p></p> <span id="ChevosN"> Active Acheivements</span>
-        <p></p> <button id="MakeN" onclick="buildSeed()">Make Seed</button> <h3 id = "SeedN">No Seed</h3>
+        <select id="mode" onchange="readgamemode()">
+            <option value="Normal">Normal</option>
+            <option value="Exterminator">Exterminator</option>
+            <option value="BossRush">BossRush</option>
+            <option value="MegaMap">MegaMap</option>
+            <option value="MirrorWorld">Mirror Mode</option>
+            <option value="Spooky">Spooky</option>
+        </select><span id="Items"> Progression Items</span> <p></p> <span id="Chevos"> Active Acheivements</span>
+        <p></p> <button id="Make" onclick="buildSeed()">Make Seed</button> <h3 id = "Seed">No Seed</h3>
 
     </div>
 

@@ -1,5 +1,7 @@
 baseKey = "123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
+gamemode = "A";
+
 function convertToBaseK(val, baseDef) {
 
     if (typeof val === 'bigint') {
@@ -167,7 +169,7 @@ function readItems(mode) {
     var length = 7;
     var items = []
     if (mode == "N") { length = 7; }
-    if (mode == "B") { length = 0; return null}
+    if (mode == "B") { length = 0; return ""}
     if (mode == "M") { length = 10;}
     for (var i = 0; i < length; i++) {//read in order per mode
         var e = document.getElementById("traversalItem" + mode + (i + 1));
@@ -198,12 +200,14 @@ function populateItems(mode) {
     if (mode == "B") { length = 0; return }
     if (mode == "N") { length = 7; }
     if (mode == "M") { length = 10; }
-    var e = document.getElementById("Items" + mode);
+    var e = document.getElementById("Items");
+    var interum = document.createElement("span");
+        interum.id = "Items" + mode;
 
     for (var i = 0; i < length; i++) {
         var box = document.createElement("select");
         box.id = "traversalItem" + mode + (i + 1);
-        e.appendChild(box);
+        interum.appendChild(box);
         for (var b = 0; b < traversalItems.length; b++) {
             var opt = document.createElement("option");
             opt.text = traversalItems[b];
@@ -211,6 +215,7 @@ function populateItems(mode) {
             box.add(opt);
         }
     }
+    e.appendChild(interum)
 }
 
 function populateAcheivements(mode) {
@@ -219,8 +224,10 @@ function populateAcheivements(mode) {
     if (mode == "N") { length = 14; achievementList = Acheviements.Normal; }
     if (mode == "B") { length = 21; achievementList = Acheviements.BossRush; }
     if (mode == "M") { length = 5; achievementList = Acheviements.MegaMap; }
-    var e = document.getElementById("Chevos" + mode);
-    var box = document.createElement("span");
+    var e = document.getElementById("Chevos");
+    var interum = document.createElement("span");
+    interum.id = "Chevos" + mode;
+
     var anchor = document.createElement("span");
     var text1 = document.createTextNode("achivements");
     var list = document.createElement("ul");
@@ -232,17 +239,16 @@ function populateAcheivements(mode) {
             list.classList.remove('visible');
             list.style.display = "none";
         }
-
         else {
             list.classList.add('visible');
             list.style.display = "block";
         }
     }
 
-    box.appendChild(anchor);
-    box.appendChild(list);
+    interum.appendChild(anchor);
+    interum.appendChild(list);
     list.id = "achivements" + mode;
-    e.appendChild(box);
+    e.appendChild(interum);
     for (var b = 0; b < achievementList.length; b++) {
         var opt = document.createElement("li");
         var check = document.createElement("input");
@@ -256,19 +262,90 @@ function populateAcheivements(mode) {
     }
 }
 
+function clear(mode) {
+    let achievementHolder = document.getElementById("Chevos" + mode);
+    let itemListHolder = document.getElementById("Items" + mode);
+
+    console.log(achievementHolder);
+    console.log(itemListHolder);
+    console.log(mode);
+    if (achievementHolder != null) {
+        achievementHolder.remove();
+    }
+    if (itemListHolder != null) {
+        itemListHolder.remove();
+    }
+}
+
 populateItems("N");
 populateAcheivements("N");
 
+function readgamemode() {
+    console.log(gamemode);
+    console.log(curMode(gamemode));
+    clear(curMode(gamemode));
+    var e = document.getElementById('mode');
+    switch (e.options[e.selectedIndex].value) {
+        case "Normal":
+            gamemode = "A";
+            break;
+        case "BossRush":
+            gamemode = "B";
+            break;
+        case "Exterminator":
+            gamemode = "E";
+            break;
+        case "MegaMap":
+            gamemode = "M";
+            break;
+        case "MirrorWorld":
+            gamemode = "R";
+            break;
+        case "Spooky":
+            gamemode = "4";
+            break;
+    }
+    populateItems(curMode(gamemode));
+    populateAcheivements(curMode(gamemode));
+}
+
+
+function curMode(trueMode) {
+    switch (trueMode) {
+        case "E":
+            return "N";
+            break;
+        case "R":
+            return "N";
+            break;
+        case "4":
+            return "N";
+            break;
+        case "A":
+            return "N";
+            break;
+        case "B":
+            return "B";
+            break;
+        case "M":
+            return "M";
+            break;
+    }
+}
+
 function buildSeed() {
-    var gameModeKey = "A";
+    var gameModeKey = gamemode;
     var seedKey = convertToBaseK(Math.floor(Math.random() * 1838265624 - 1), baseKey).padStart(6, baseKey[0]);
-    var traversalKey = traversalItemListToKey(readItems("N"), "N");
-    var achievementKey = achievementsToKey(readAcheivements("N"), "N");
+    var traversalKey = traversalItemListToKey(readItems(curMode(gamemode) ), curMode(gamemode) );
+    var achievementKey = achievementsToKey(readAcheivements(curMode(gamemode) ), curMode(gamemode) );
 
     //Mega Map : 1 + 6 + 16 + 1 characters = 24 characters
     //Boss Rush: 1 + 6 + 0 + 8 characters = 15 characters
     //Other Modes : 1 + 6 + 10 + 6 characters = 23 characters
-
+    if (traversalKey == null || traversalKey == undefined) {
+        console.log(traversalKey);
+        traversalKey = "";
+    }
     console.log(gameModeKey + " " + seedKey + " " + traversalKey + " " + achievementKey); //debug display
     var key = gameModeKey + seedKey + traversalKey + achievementKey;
     key = key.padEnd(24, baseKey[0]);
@@ -277,6 +354,6 @@ function buildSeed() {
         temp[i] = key.substr(i * 6, 6);
     }
     key = temp[0] + " " + temp[1] + " " + temp[2] + " " + temp[3];
-    document.getElementById("SeedN").innerHTML = key;
+    document.getElementById("Seed").innerHTML = key;
     return key;
 }
