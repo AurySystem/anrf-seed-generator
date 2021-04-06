@@ -80,6 +80,39 @@ traversalItems = [
     'PulseMGL'
 ];
 
+ultJump = [
+    'JetPack',
+    'Infinijump',
+    'ViridianShell'
+];
+
+function isUltJump(id) {
+    for (var i in ultJump) {
+        if (id == traversalItems.indexOf(ultJump[i])) {
+            return true
+        }
+    }
+    return false
+}
+
+function isJump(id) {
+    let jump = [
+        'DoubleJump',
+        'PowerJump',
+        'HoverBoots',
+        'UpDog'
+    ];
+    for (var i in jump) {
+        if (id == traversalItems.indexOf(jump[i])) {
+            return true
+        }
+    }
+    return false
+}
+
+function getUltJumpid(id) {
+    return traversalItems.indexOf(ultJump[id]) 
+}
 
 Acheviements = {};
 
@@ -184,16 +217,33 @@ function readItems(mode) {
             temp = temp.value;
         }
         let rndm = Math.round(Math.random() * traversalItems.length);
+        if (gamemode != "E") {
+            if (i != length - 1) {
+                while (isUltJump(rndm)) {
+                    rndm = Math.round(Math.random() * traversalItems.length);
+                }
+            } else {
+                rndm = getUltJumpid(Math.round(Math.random() * ultJump.length) );
+            }
+        }
+
         for (var t in items) {
-            if (t == temp) {
+            if (items[t] == temp || (isJump(rndm) && isJump(items[t])) ) {
                 e.selectedIndex = -1;
                 temp = dupe;
             } else if ("Random" === temp) {
-                if (rndm == t) {
-                    rndm = Math.round(Math.random() * traversalItems.length);
+                if (gamemode != "E" && i != length - 1) {
+                    while (rndm == items[t] || isUltJump(rndm) || (isJump(rndm) && isJump(items[t]) ) ) {
+                        rndm = Math.round(Math.random() * traversalItems.length);
+                    }
+                } else {
+                    while (rndm == items[t]) {
+                        rndm = Math.round(Math.random() * traversalItems.length);
+                    }
                 }
             }
         }
+
         if (temp === "Random"){
             temp = parseInt(rndm);
             e.selectedIndex = parseInt(rndm);
