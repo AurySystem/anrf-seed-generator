@@ -1,6 +1,9 @@
 baseKey = "123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 gamemode = "A";
+dupe = "DUPE";
+error = "ERROR";
+invaildItems = "INVALID ITEM LIST"
 
 function convertToBaseK(val, baseDef) {
 
@@ -112,11 +115,13 @@ function traversalItemListToKey(items, mode)
     if (mode == "B") { length = 0; return }
     if (mode == "N") { length = 10; }
     if (mode == "M") { length = 16; }
-    //honestly this lil bit's just a one to one port mostly 
     var indices = 0n;
     for (i in items) {
+        if (items[i] === dupe || items[i] === error) {
+            return invaildItems
+        }
         var mod = 100n ** BigInt.asUintN(64,i);
-        var index = BigInt.asUintN(64,items[i]);
+        var index = BigInt.asUintN(64,parseInt(items[i])+"" );
         indices += index * mod;
     }
     var key = convertToBaseK(indices, baseKey);
@@ -172,7 +177,29 @@ function readItems(mode) {
     if (mode == "M") { length = 12;}
     for (var i = 0; i < length; i++) {//read in order per mode
         var e = document.getElementById("traversalItem" + mode + (i + 1));
-        items[i] = e.options[e.selectedIndex].value;
+        let temp = e.options[e.selectedIndex];
+        if (temp === undefined) {
+            temp = error;
+        } else {
+            temp = temp.value;
+        }
+        let rndm = Math.round(Math.random() * traversalItems.length);
+        for (var t in items) {
+            if (t == temp) {
+                e.selectedIndex = -1;
+                temp = dupe;
+            } else if ("Random" === temp) {
+                if (rndm == t) {
+                    rndm = Math.round(Math.random() * traversalItems.length);
+                }
+            }
+        }
+        if (temp === "Random"){
+            temp = parseInt(rndm);
+            e.selectedIndex = parseInt(rndm);
+        }
+        items[i] = temp; 
+        console.log(temp + " item, index: " + i)
     }
     return items
 }
@@ -207,10 +234,15 @@ function populateItems(mode) {
         var box = document.createElement("select");
         box.id = "traversalItem" + mode + (i + 1);
         interum.appendChild(box);
-        for (var b = 0; b < traversalItems.length; b++) {
+        for (var b = 0; b < traversalItems.length + 1; b++) {
             var opt = document.createElement("option");
-            opt.text = traversalItems[b];
-            opt.value = b;
+            if (b != traversalItems.length) {
+                opt.text = traversalItems[b];
+                opt.value = b;
+            } else {
+                opt.text = "Random";
+                opt.value = "Random";
+            }
             box.add(opt);
         }
     }
@@ -329,7 +361,7 @@ function curMode(trueMode) {
 
 function buildSeed() {
     var gameModeKey = gamemode;
-    var seedKey = convertToBaseK(Math.floor(Math.random() * 1838265624 - 1), baseKey).padStart(6, baseKey[0]);
+    var rngKey = convertToBaseK(Math.floor(Math.random() * 1838265624 - 1), baseKey).padStart(6, baseKey[0]);
     var traversalKey = traversalItemListToKey(readItems(curMode(gamemode) ), curMode(gamemode) );
     var achievementKey = achievementsToKey(readAcheivements(curMode(gamemode) ), curMode(gamemode) );
 
@@ -339,14 +371,17 @@ function buildSeed() {
     if (traversalKey == null || traversalKey == undefined) {
         traversalKey = "";
     }
-    console.log(gameModeKey + " " + seedKey + " " + traversalKey + " " + achievementKey); //debug display
-    var key = gameModeKey + seedKey + traversalKey + achievementKey;
+    console.log(gameModeKey + " " + rngKey + " " + traversalKey + " " + achievementKey); //debug display
+    var key = gameModeKey + rngKey + traversalKey + achievementKey;
     key = key.padEnd(24, baseKey[0]);
     var temp = [];
     for (var i = 0; i < 4; i++){
         temp[i] = key.substr(i * 6, 6);
     }
     key = temp[0] + " " + temp[1] + " " + temp[2] + " " + temp[3];
+    if (traversalKey === invaildItems) {
+        key = traversalKey;
+    }
     document.getElementById("Seed").innerHTML = key;
     return key;
 }
