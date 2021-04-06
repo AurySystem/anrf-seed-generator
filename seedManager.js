@@ -228,7 +228,7 @@ function readItems(mode) {
         }
 
         for (var t in items) {
-            if (items[t] == temp || (isJump(rndm) && isJump(items[t])) ) {
+            if (items[t] == temp ) {
                 e.selectedIndex = -1;
                 temp = dupe;
             } else if ("Random" === temp) {
@@ -242,6 +242,11 @@ function readItems(mode) {
                     }
                 }
             }
+
+            if ((isJump(items[t]) && isJump(temp))) {
+                e.selectedIndex = -1;
+                temp = dupe;
+            }
         }
 
         if (temp === "Random"){
@@ -249,7 +254,6 @@ function readItems(mode) {
             e.selectedIndex = parseInt(rndm);
         }
         items[i] = temp; 
-        console.log(temp + " item, index: " + i)
     }
     return items
 }
@@ -262,12 +266,15 @@ function readAcheivements(mode) {
     if (mode == "M") { length = 5; }
     var e = document.getElementById("achivements" + mode);
     var temp = e.children;
-    for (var i = 0; i < temp.length; i++) {
+    for (var i = 0; i < length; i++) {
+        if (temp[length].children[0].checked) {
+            temp[i].children[0].checked = (Math.random() >= 0.5)? true : false;
+        }
         if (temp[i].children[0].checked) {
             let id = temp[i].children[0].id;
-            chevos[i] = parseInt(id.replace("chevo"+mode,""));
+            chevos[i] = parseInt(id.replace("chevo" + mode, ""));
         }
-    }
+    }    
     return chevos
 }
 
@@ -295,6 +302,7 @@ function populateItems(mode) {
             }
             box.add(opt);
         }
+        box.selectedIndex = traversalItems.length
     }
     e.appendChild(interum)
 }
@@ -330,13 +338,22 @@ function populateAcheivements(mode) {
     interum.appendChild(list);
     list.id = "achivements" + mode;
     e.appendChild(interum);
-    for (var b = 0; b < achievementList.length; b++) {
+    for (var b = 0; b < achievementList.length + 1; b++) {
         var opt = document.createElement("li");
         var check = document.createElement("input");
-        var text = document.createTextNode(achievementList[b]);
+        var text = "";
+        if (b == achievementList.length) {
+            text = "Random";
+        } else {
+            text = document.createTextNode(achievementList[b]);
+        }
 
         check.type = "checkbox"
-        check.id = 'chevo'+mode+b
+        if (b == achievementList.length) {
+            check.id = 'chevo' + mode + "Random";
+        } else {
+            check.id = 'chevo' + mode + b;
+        }
         opt.appendChild(check);
         opt.append(text);
         list.appendChild(opt);
