@@ -205,6 +205,12 @@ function achievementsToKey(chevos, mode)
 function readItems(mode) {
     var length = 7;
     var items = []
+    var checkFor = function (input) {
+        if (items.indexOf(input) != null && items.indexOf(input) != undefined && items.indexOf(input) != -1) {
+            return true
+        }
+        return false
+    }
     if (mode == "N") { length = 7; }
     if (mode == "B") { length = 0; return ""}
     if (mode == "M") { length = 12;}
@@ -223,7 +229,7 @@ function readItems(mode) {
                     rndm = Math.round(Math.random() * traversalItems.length);
                 }
             } else {
-                rndm = getUltJumpid(Math.round(Math.random() * ultJump.length) );
+                rndm = getUltJumpid(Math.round(Math.random() * ultJump.length-1 ) );
             }
         }
 
@@ -233,11 +239,11 @@ function readItems(mode) {
                 temp = dupe;
             } else if ("Random" === temp) {
                 if (gamemode != "E" && i != length - 1) {
-                    while (rndm == items[t] || isUltJump(rndm) || (isJump(rndm) && isJump(items[t]) ) ) {
+                    while (checkFor(rndm) || isUltJump(rndm) || (isJump(rndm) && isJump(items[t]) ) ) {
                         rndm = Math.round(Math.random() * traversalItems.length);
                     }
                 } else {
-                    while (rndm == items[t]) {
+                    while (checkFor(rndm)) {
                         rndm = Math.round(Math.random() * traversalItems.length);
                     }
                 }
@@ -378,18 +384,24 @@ populateAcheivements("N");
 function readgamemode() {
     clear(curMode(gamemode));
     var e = document.getElementById('mode');
+    if (e.options[e.selectedIndex].value == "Random") {
+        e.selectedIndex = Math.round(Math.random() * 5);
+    } else if (e.options[e.selectedIndex].value == "EventRandom") {
+        e.selectedIndex = Math.round(Math.random() * 2);
+    }
+
     switch (e.options[e.selectedIndex].value) {
         case "Normal":
             gamemode = "A";
-            break;
-        case "BossRush":
-            gamemode = "B";
             break;
         case "Exterminator":
             gamemode = "E";
             break;
         case "MegaMap":
             gamemode = "M";
+            break;
+        case "BossRush":
+            gamemode = "B";
             break;
         case "MirrorWorld":
             gamemode = "R";
