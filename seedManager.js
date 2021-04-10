@@ -222,14 +222,14 @@ function readItems(mode) {
         } else {
             temp = temp.value;
         }
-        let rndm = Math.round(Math.random() * traversalItems.length);
+        let rndm = Math.round(Math.random() * (traversalItems.length-1));
         if (gamemode != "E") {
             if (i != length - 1) {
                 while (isUltJump(rndm)) {
-                    rndm = Math.round(Math.random() * traversalItems.length);
+                    rndm = Math.round(Math.random() * (traversalItems.length-1));
                 }
             } else {
-                rndm = getUltJumpid(Math.round(Math.random() * ultJump.length-1 ) );
+                rndm = getUltJumpid(Math.round(Math.random() * (ultJump.length-1) ) );
             }
         }
 
