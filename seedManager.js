@@ -313,7 +313,7 @@ function populateItems(mode) {
     e.appendChild(interum)
 }
 
-function populateAcheivements(mode) {
+function populateAcheivements(mode, rndm) {
     var length = 14;
     var achievementList = [];
     if (mode == "N") { length = 14; achievementList = Acheviements.Normal; }
@@ -357,6 +357,9 @@ function populateAcheivements(mode) {
         check.type = "checkbox"
         if (b == achievementList.length) {
             check.id = 'chevo' + mode + "Random";
+            if (rndm) {
+                check.checked = true;
+            }
         } else {
             check.id = 'chevo' + mode + b;
         }
@@ -379,15 +382,18 @@ function clear(mode) {
 }
 
 populateItems("N");
-populateAcheivements("N");
+populateAcheivements("N", false);
 
 function readgamemode() {
     clear(curMode(gamemode));
     var e = document.getElementById('mode');
+    var rndm = false;
     if (e.options[e.selectedIndex].value == "Random") {
         e.selectedIndex = Math.round(Math.random() * 5);
+        rndm = true;
     } else if (e.options[e.selectedIndex].value == "EventRandom") {
         e.selectedIndex = Math.round(Math.random() * 2);
+        rndm = true;
     }
 
     switch (e.options[e.selectedIndex].value) {
@@ -411,7 +417,7 @@ function readgamemode() {
             break;
     }
     populateItems(curMode(gamemode));
-    populateAcheivements(curMode(gamemode));
+    populateAcheivements(curMode(gamemode), rndm);
 }
 
 
