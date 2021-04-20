@@ -1,0 +1,73 @@
+#main {
+    background-color: #30363d;
+    color: lightyellow;
+}
+    #main select {
+        color: #f3e2ca;
+        background-color: #474d63;
+        border: none;
+        border-radius: 0.8em;
+        padding: 0.1em 0.1em 0.1em 0.1em;
+        margin-left: 0.1em;
+        margin-right: 0.2em;
+    }
+
+#Make {
+    color: #f3e2ca;
+    background-color: #474d63;
+    border-radius: 0.8em;
+    border-style: none;
+    padding: 0.15em 0.5em 0.1em 0.5em;
+}
+    #Make :active {
+        color: #f3e2ca;
+        background-color: #474d63;
+        border-radius: 0.8em;
+        border-style: none;
+        padding: 0.15em 0.5em 0.1em 0.5em;
+    }
+
+.chevo-dropdown span {
+    color: #f3e2ca;
+    background-color: #474d63;
+    border-radius: 0.8em;
+    border-style: none;
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    padding: 0.1em 1.4em 0.1em 0.6em;
+}
+    .chevo-dropdown span::after {
+        position: absolute;
+        content: "";
+        border-left: 0.15em solid #f3e2ca;
+        border-top: 0.15em solid #f3e2ca;
+        padding: 0.15em;
+        right: 0.6em;
+        top: 30%;
+        -moz-transform: rotate(-135deg);
+        -ms-transform: rotate(-135deg);
+        -o-transform: rotate(-135deg);
+        -webkit-transform: rotate(-135deg);
+        transform: rotate(-135deg);
+    }
+
+.chevo-dropdown ul {
+    padding: 2px;
+    display: none;
+    margin: 0;
+    border: 1px solid #f3e2ca;
+    border-top: none;
+    color: #f3e2ca;
+    background-color: #474d63;
+    border-radius: 0.2em;
+    position: absolute;
+    margin-left: 0.4em;
+}
+
+    .chevo-dropdown ul li {
+        list-style: none;
+        padding-right: 1.6em;
+        color: #f3e2ca;
+        background-color: #474d63;
+    }

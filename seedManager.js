@@ -240,11 +240,11 @@ function readItems(mode) {
             } else if ("Random" === temp) {
                 if (gamemode != "E" && i != length - 1) {
                     while (checkFor(rndm) || isUltJump(rndm) || (isJump(rndm) && isJump(items[t]) ) ) {
-                        rndm = Math.round(Math.random() * traversalItems.length);
+                        rndm = Math.round(Math.random() * (traversalItems.length - 1));
                     }
                 } else {
                     while (checkFor(rndm)) {
-                        rndm = Math.round(Math.random() * traversalItems.length);
+                        rndm = Math.round(Math.random() * (traversalItems.length - 1));
                     }
                 }
             }
@@ -291,7 +291,10 @@ function populateItems(mode) {
     if (mode == "M") { length = 12; }
     var e = document.getElementById("Items");
     var interum = document.createElement("span");
-        interum.id = "Items" + mode;
+    interum.id = "Items" + mode;
+
+    var text = document.createTextNode("Progression Items: ");
+    interum.appendChild(text);
 
     for (var i = 0; i < length; i++) {
         var box = document.createElement("select");
@@ -320,15 +323,18 @@ function populateAcheivements(mode, rndm) {
     if (mode == "B") { length = 21; achievementList = Acheviements.BossRush; }
     if (mode == "M") { length = 5; achievementList = Acheviements.MegaMap; }
     var e = document.getElementById("Chevos");
-    var interum = document.createElement("span");
+    var interum = document.createElement("div");
     interum.id = "Chevos" + mode;
+    interum.style.display = "inline-block";
 
     var anchor = document.createElement("span");
-    var text1 = document.createTextNode("achivements");
+    var text1 = document.createTextNode("Active Acheivements");
     var list = document.createElement("ul");
+    interum.classList.add('chevo-dropdown');
     anchor.append(text1);
-
-    anchor.onclick = function (e) {
+    anchor.tabIndex = 0;
+    list.tabIndex = 0;
+    var onclick = function (e) {
         let list = document.getElementById("achivements" + mode);
         if (list.classList.contains('visible')) {
             list.classList.remove('visible');
@@ -340,6 +346,20 @@ function populateAcheivements(mode, rndm) {
         }
     }
 
+    anchor.onclick = onclick;
+
+    anchor.onkeydown = function (e) {
+        if (e.code == "Enter") {
+            onclick();
+        }
+    }
+
+    list.onblur = function (e) {
+        let list = document.getElementById("achivements" + mode);
+            list.classList.remove('visible');
+            list.style.display = "none";
+    }
+
     interum.appendChild(anchor);
     interum.appendChild(list);
     list.id = "achivements" + mode;
@@ -347,21 +367,23 @@ function populateAcheivements(mode, rndm) {
     for (var b = 0; b < achievementList.length + 1; b++) {
         var opt = document.createElement("li");
         var check = document.createElement("input");
-        var text = "";
+        var text = document.createElement("label");
         if (b == achievementList.length) {
-            text = "Random";
+            text.innerText = "Random";
         } else {
-            text = document.createTextNode(achievementList[b]);
+            text.innerText = achievementList[b];
         }
 
         check.type = "checkbox"
         if (b == achievementList.length) {
+            text.htmlFor = 'chevo' + mode + "Random";
             check.id = 'chevo' + mode + "Random";
             if (rndm) {
                 check.checked = true;
             }
         } else {
             check.id = 'chevo' + mode + b;
+            text.htmlFor = 'chevo' + mode + b;
         }
         opt.appendChild(check);
         opt.append(text);

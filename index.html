@@ -6,11 +6,11 @@
     <title>ARNF Seed Tool</title>
     <link rel="stylesheet" type="text/css" href="Style.css">
 </head>
-<body>
-    <h1>ARNF Seed Tool</h1>
+<body id="main">
+    <h1 class="">ARNF Seed Tool</h1>
 
     <div id="content">
-        <select id="mode" onchange="readgamemode()">
+        Gamemode: <select id="mode" class="" onchange="readgamemode()">
             <option value="Normal">Normal</option>
             <option value="MegaMap">MegaMap</option>
             <option value="Exterminator">Exterminator</option>
@@ -19,8 +19,8 @@
             <option value="Spooky">Spooky</option>
             <option id="Test" value="Random">Random</option>
             <option value="EventRandom">EventRandom</option>
-        </select><span id="Items"> Progression Items</span> <p></p> <span id="Chevos"> Active Acheivements</span>
-        <p></p> <button id="Make" onclick="buildSeed()">Make Seed</button> <h3 id = "Seed">No Seed</h3>
+        </select><p></p> <span id="Items"> </span> <p></p> <span id="Chevos"></span>
+        <p></p> <button id="Make" onclick="buildSeed()">Make Seed</button> <h3 id="Seed">No Seed</h3>
 
     </div>
 
