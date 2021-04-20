@@ -346,7 +346,21 @@ function populateAcheivements(mode, rndm) {
         }
     }
 
+    var onblur = function (e) {
+        let list = document.getElementById("achivements" + mode);
+        var check = document.activeElement;
+        setTimeout(function () {
+            check = document.activeElement; console.log(check)
+            if (list.contains(check) == false) {
+                list.classList.remove('visible');
+                list.style.display = "none";
+            }
+        }, 30)
+    }
+
     anchor.onclick = onclick;
+    anchor.onblur = onblur;
+    list.onblur = onblur;
 
     anchor.onkeydown = function (e) {
         if (e.code == "Enter") {
@@ -354,11 +368,6 @@ function populateAcheivements(mode, rndm) {
         }
     }
 
-    list.onblur = function (e) {
-        let list = document.getElementById("achivements" + mode);
-            list.classList.remove('visible');
-            list.style.display = "none";
-    }
 
     interum.appendChild(anchor);
     interum.appendChild(list);
@@ -385,6 +394,7 @@ function populateAcheivements(mode, rndm) {
             check.id = 'chevo' + mode + b;
             text.htmlFor = 'chevo' + mode + b;
         }
+        check.onblur = onblur;
         opt.appendChild(check);
         opt.append(text);
         list.appendChild(opt);
