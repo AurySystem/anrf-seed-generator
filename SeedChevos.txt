@@ -43,4 +43,24 @@ $BossRush achievement count: 21
 18 CrystalMines
 19 HazardShell
 20 PhaseShell
+!
+$AltBossRush achievement count: 21
+0 Sluggard
+1 Abomination
+2 BeakLord
+3 MolemanShaman
+4 FleshAdder
+5 Cephalodiptera
+6 MetalPatriarch
+7 MouthMeatSenior
+8 Polyphemus
+9 MouthMeat
+10 WallCreep
+11 WhiteWyrm
+13 OozeHart
+14 Blightbark
+16 Leviathan
+17 Stalkus
+19 SkinDeviler
+20 CorruptedMiner
 !`

@@ -126,7 +126,7 @@ function parseAcheviements(file) {
             console.log(mode)
             Acheviements[mode] = [];
             i++
-            while (!(line.startsWith("!"))) {//todo add a check for boss rush that renames the achiements to the corosponding bosses
+            while (!(line.startsWith("!"))) {
                 var line = input[i];
                 var proc = line.split(" ");
                 if (!(line.startsWith("!"))) {
@@ -141,7 +141,6 @@ function parseAcheviements(file) {
 
 }
 parseAcheviements(file);
-
 
 function traversalItemListToKey(items, mode)
 {
@@ -319,8 +318,9 @@ function populateItems(mode) {
 function populateAcheivements(mode, rndm) {
     var length = 14;
     var achievementList = [];
+    var altNames = undefined;
     if (mode == "N") { length = 14; achievementList = Acheviements.Normal; }
-    if (mode == "B") { length = 21; achievementList = Acheviements.BossRush; }
+    if (mode == "B") { length = 21; achievementList = Acheviements.BossRush; altNames = Acheviements.AltBossRush;}
     if (mode == "M") { length = 5; achievementList = Acheviements.MegaMap; }
     var e = document.getElementById("Chevos");
     var interum = document.createElement("div");
@@ -350,7 +350,7 @@ function populateAcheivements(mode, rndm) {
         let list = document.getElementById("achivements" + mode);
         var check = document.activeElement;
         setTimeout(function () {
-            check = document.activeElement; console.log(check)
+            check = document.activeElement;
             if (list.contains(check) == false) {
                 list.classList.remove('visible');
                 list.style.display = "none";
@@ -379,6 +379,12 @@ function populateAcheivements(mode, rndm) {
         var text = document.createElement("label");
         if (b == achievementList.length) {
             text.innerText = "Random";
+        } else if (altNames != undefined ) {
+            if (altNames[b] != undefined) {
+                text.innerText = altNames[b];
+            } else {
+                text.innerText = achievementList[b];
+            }
         } else {
             text.innerText = achievementList[b];
         }
