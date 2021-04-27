@@ -227,18 +227,26 @@ function readItems(mode) {
                 while (isUltJump(rndm)) {
                     rndm = Math.round(Math.random() * (traversalItems.length-1));
                 }
+                if (isUltJump(temp)) {
+                    e.selectedIndex = -1;
+                    temp = error;
+                }
             } else {
-                rndm = getUltJumpid(Math.round(Math.random() * (ultJump.length-1) ) );
+                rndm = getUltJumpid(Math.round(Math.random() * (ultJump.length - 1)));
+                if (!isUltJump(temp) && "Random" !== temp) {
+                    e.selectedIndex = -1;
+                    temp = error;
+                }
             }
         }
 
         for (var t in items) {
-            if (items[t] == temp ) {
+            if (items[t] == temp) {
                 e.selectedIndex = -1;
                 temp = dupe;
             } else if ("Random" === temp) {
                 if (gamemode != "E" && i != length - 1) {
-                    while (checkFor(rndm) || isUltJump(rndm) || (isJump(rndm) && isJump(items[t]) ) ) {
+                    while (checkFor(rndm) || isUltJump(rndm) || (isJump(rndm) && isJump(items[t]))) {
                         rndm = Math.round(Math.random() * (traversalItems.length - 1));
                     }
                 } else {
@@ -246,20 +254,23 @@ function readItems(mode) {
                         rndm = Math.round(Math.random() * (traversalItems.length - 1));
                     }
                 }
+            } else if (gamemode != "E" && i != length - 1) {
+                if ((isJump(items[t]) && isJump(temp))) {
+                    e.selectedIndex = -1;
+                    temp = dupe;
+                }
             }
 
-            if ((isJump(items[t]) && isJump(temp))) {
-                e.selectedIndex = -1;
-                temp = dupe;
-            }
         }
 
-        if (temp === "Random"){
+        if (temp === "Random") {
+            temp = e.querySelector(`option[value="${rndm}"]`);
+            e.selectedIndex = parseInt(temp.index);
             temp = parseInt(rndm);
-            e.selectedIndex = parseInt(rndm);
         }
         items[i] = temp; 
     }
+    
     return items
 }
 
@@ -308,9 +319,19 @@ function populateItems(mode) {
                 opt.text = "Random";
                 opt.value = "Random";
             }
-            box.add(opt);
+            if (gamemode != "E") {
+                if (!isUltJump(b) && i != length - 1) {
+                    box.add(opt);
+                } else if (isUltJump(b) && i == length - 1) {
+                    box.add(opt);
+                } else if (opt.value == "Random") {
+                    box.add(opt);
+                }
+            } else {
+                box.add(opt);
+            }
         }
-        box.selectedIndex = traversalItems.length
+        box.selectedIndex = box.children.length - 1;
     }
     e.appendChild(interum)
 }
